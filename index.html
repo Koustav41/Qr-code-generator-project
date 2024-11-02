@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" 
+          content="width=device-width, 
+                         initial-scale=1.0" />
+    <title>QR Code Generator</title>
+    <style>
+        h1, h3 {
+          color: white;
+        }
+        body, header {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+	body{
+    background-image: url("Images/Qr code background image(2).jpg");
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+    </style>
+
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>QR CODE GENERATOR WEBSITE</h1>
+		<marquee direction="left"><b1><h3>Create any website QR code in just a second</h3></b1></marquee>
+		<h3>Enter website url as qr content and generate web QR</h3>
+    </header>
+    <main>
+        <form action="/" 
+              id="qr-generation-form">
+            <input type="text"
+                   name="qr-code-content"
+                   id="qr-content" 
+                   value=""
+                   placeholder="Enter QR content"
+                   autocomplete="off" />
+            <input type="submit" 
+                   value="Generate QR Code" />
+        </form><br />
+        <div id="qr-code"></div>
+    </main>
+</body>
+<script>
+    let qrContentInput = document.getElementById("qr-content");
+    let qrGenerationForm = 
+    document.getElementById("qr-generation-form");
+    let qrCode;
+    
+    function generateQrCode(qrContent) {
+      return new QRCode("qr-code", {
+        text: qrContent,
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H,
+      });
+    }
+    
+    qrGenerationForm.addEventListener("submit", function (event) {
+    
+      event.preventDefault();
+      let qrContent = qrContentInput.value;
+      if (qrCode == null) {
+        qrCode = generateQrCode(qrContent);
+      } else {
+        qrCode.makeCode(qrContent);
+      }
+    });
+</script>
+
+</html>
