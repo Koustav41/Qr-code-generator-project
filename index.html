@@ -1,83 +1,105 @@
-<!DOCTYPE html>
+<!DOCTYPE html><script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" 
-          content="width=device-width, 
-                         initial-scale=1.0" />
-    <title>QR Code Generator</title>
-    <style>
-        h1, h3 {
-          color: white;
-        }
-        body, header {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
+<meta name="viewport"
+		content="width=device-width, 
+						initial-scale=1.0" />
+	<title>QR Code Generator</title>
+	<link rel="website icon" type="jpg" href="Image\qr-code-scanner-app-icon-vector-28873346.jpg">
+	<style>
+		h1, h3 {
+		color:white;
+		}
+		body, header { 
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		}
 	body{
-    background-image: url("Images/Qr code background image(2).jpg");
+    background-image: url("Image/Qr code background image(2).jpg");
     background-repeat: no-repeat; 
     background-attachment: fixed;
     background-size: 100% 100%;
 }
-    </style>
 
-    <script src=
+
+	</style>
+
+	<script src=
 "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
-    </script>
+	</script>
 </head>
-
 <body>
-    <header>
-        <h1>QR CODE GENERATOR WEBSITE</h1>
+	<header>
+		<h1>QR CODE GENERATOR</h1>
 		<marquee direction="left"><b1><h3>Create any website QR code in just a second</h3></b1></marquee>
-		<h3>Enter website url as qr content and generate web QR</h3>
-    </header>
-    <main>
-        <form action="/" 
-              id="qr-generation-form">
-            <input type="text"
-                   name="qr-code-content"
-                   id="qr-content" 
-                   value=""
-                   placeholder="Enter QR content"
-                   autocomplete="off" />
-            <input type="submit" 
-                   value="Generate QR Code" />
-        </form><br />
-        <div id="qr-code"></div>
-    </main>
+		<h3>Enter website url and generate QR</h3>
+	</header>
+	<main>
+		<form action="/"
+			id="qr-generation-form">
+			<input type="text"
+				name="qr-code-content"
+				id="qr-content"
+				value=""
+				placeholder="Enter QR content"
+				autocomplete="off" />
+			<input type="submit"
+				value="Generate QR Code" />
+		</form><br />
+		<div id="qr-code"></div>
+	</main>
 </body>
 <script>
-    let qrContentInput = document.getElementById("qr-content");
-    let qrGenerationForm = 
-    document.getElementById("qr-generation-form");
-    let qrCode;
-    
-    function generateQrCode(qrContent) {
-      return new QRCode("qr-code", {
-        text: qrContent,
-        width: 256,
-        height: 256,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H,
-      });
+	let qrContentInput = document.getElementById("qr-content");
+	let qrGenerationForm = 
+	document.getElementById("qr-generation-form");
+	let qrCode;
+	
+	function generateQrCode(qrContent) {
+	return new QRCode("qr-code", {
+		text: qrContent,
+		width: 200,
+		height: 200,
+		colorDark: "#000000",
+		colorlight: "#34e8c7",
+		correctLevel: QRCode.CorrectLevel.H,
+	});
+	}
+	
+	
+	qrGenerationForm.addEventListener("submit", function (event) {
+	event.preventDefault();
+	let qrContent = qrContentInput.value;
+	if (qrCode == null) {
+		qrCode = generateQrCode(qrContent);
+	} else { 
+		qrCode.makeCode(qrContent);
+	}
+	});
+</script>
+<head>
+	<meta charset="UTF-8" /><button id="download-qr-code" onclick="downloadQRCode()">Download QR Code</button>
+
+<script>
+function downloadQRCode() {
+    let qrCodeCanvas = document.getElementById("qr-code").children[0];
+    let qrCodeDataUrl = qrCodeCanvas.toDataURL();
+    let qrCodeBlob = dataURLtoBlob(qrCodeDataUrl);
+    saveAs(qrCodeBlob, "qr-code.png");
+}
+
+function dataURLtoBlob(dataurl) {
+    let arr = dataurl.split(',');
+    let mime = arr[0].match(/:(.*?);/)[1];
+    let bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
     }
-    
-    qrGenerationForm.addEventListener("submit", function (event) {
-    
-      event.preventDefault();
-      let qrContent = qrContentInput.value;
-      if (qrCode == null) {
-        qrCode = generateQrCode(qrContent);
-      } else {
-        qrCode.makeCode(qrContent);
-      }
-    });
+    return new Blob([u8arr], { type: mime });
+}
 </script>
 
 </html>
